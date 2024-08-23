@@ -7,7 +7,7 @@ use ::bevy::prelude::{App, AppTypeRegistry};
 
 use ::bevy::reflect::{FromType, GetTypeRegistration, Reflect};
 
-use bevy_mod_scripting_core::world::WorldPointer;
+use bevy_mod_scripting_core::{world::WorldPointer, prelude::ScriptError};
 use bevy_mod_scripting_lua::tealr::{self, ToTypename};
 
 use tealr::mlu::mlua::MetaMethod;
@@ -301,6 +301,24 @@ impl<'lua, T: Clone + UserData + Send + ValueLuaType + Reflect + 'static> IntoLu
 impl GetWorld for Lua {
     type Error = mlua::Error;
     fn get_world(&self) -> Result<WorldPointer, Self::Error> {
-        self.globals().get::<_, LuaWorld>("world").map(Into::into)
+        self.globals().get::<_, LuaWorld>("world")
+            .map(Into::into)
+            .map_err(|mut e| {
+                // If no world is available, add a note to the error. Otherwise
+                // there is an error about converting a nil value to some
+                // anonymous UserData.
+                if let mlua::Error::FromLuaConversionError { ref mut message, ref mut to, .. } = e {
+                    *to = "LuaWorld";
+                    if matches!(self.globals().contains_key("world"), Ok(false)) {
+                        *message = if let Some(mut s) = message.take() {
+                            s.push_str("; no bevy world present");
+                            Some(s)
+                        } else {
+                            Some("no bevy world present".into())
+                        };
+                    }
+                }
+                e
+            })
     }
 }
