@@ -116,6 +116,7 @@ impl<A: LuaArg> ScriptHost for LuaScriptHost<A> {
         // init lua api before loading script
         let mut lua = Mutex::new(lua);
         providers.attach_all(&mut lua)?;
+        // XXX: Any way to set the runtime here?
 
         lua.get_mut()
             .map_err(|e| ScriptError::FailedToLoad {
@@ -155,6 +156,7 @@ impl<A: LuaArg> ScriptHost for LuaScriptHost<A> {
         let world = unsafe { WorldPointerGuard::new(world) };
 
         ctxs.for_each(|(script_data, ctx)| {
+            // XXX: This is how the runtime gets setup.
             providers
                 .setup_runtime_all(world.clone(), &script_data, ctx)
                 .expect("Could not setup script runtime");
