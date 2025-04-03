@@ -24,17 +24,18 @@
         <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="../highlight.css">
-        <link rel="stylesheet" href="../tomorrow-night.css">
-        <link rel="stylesheet" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "../";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc.js"></script>
@@ -44,8 +45,8 @@
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -59,7 +60,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,8 +74,8 @@
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -109,6 +111,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
@@ -199,6 +202,26 @@
 hello_world2("hi from global!");
 </code></pre>
 <p>Note the <code>new_unregistered</code> call instead of <code>new</code>, this is because <code>GlobalNamespace</code> is not a <code>Reflect</code> type, and the <code>new</code> call also automatically registers the type in the reflection registry.</p>
+<h2 id="macros"><a class="header" href="#macros">Macros</a></h2>
+<p>The above is a bit tedious, so instead you can use the <code>script_bindings</code> macro, which applies to impl blocks like so:</p>
+<pre><code class="language-rust ignore">#[script_bindings("test_fn")]
+impl TestStruct {
+    /// My docs !!
+    /// 
+    /// Arguments:
+    /// * `_self` - the first argument
+    /// * `arg1` - the second argument
+    /// Returns:
+    /// * `return` - nothing
+    fn test_fn(_self: Ref&lt;TestStruct&gt;, mut arg1: usize) {}
+}
+
+
+pub fn main() {
+    let mut app = App::new();
+    register_test_fn(app.world_mut())
+}</code></pre>
+<p>Note the documentation will automatically be picked up and stored for the purposes of reflection and documentation generation, including argument/return type specific docs.</p>
 <h2 id="context-arguments"><a class="header" href="#context-arguments">Context Arguments</a></h2>
 <p>Each script function call always receives an additional context argument: <code>FunctionCallContext</code>.
 You can opt-in to receive this argument in your own function definitions by adding it as the first argument.</p>
