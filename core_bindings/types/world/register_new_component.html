@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>set - Bevy Scripting</title>
+        <title>register_new_component - Bevy Scripting</title>
 
 
         <!-- Custom HTML head -->
@@ -132,7 +132,7 @@
                         <a href="https://github.com/makspll/bevy_mod_scripting" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/makspll/bevy_mod_scripting/edit/main/docs/src/core_bindings/types/reflectreference/set.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/makspll/bevy_mod_scripting/edit/main/docs/src/core_bindings/types/world/register_new_component.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -161,32 +161,39 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="set"><a class="header" href="#set"><code>set</code></a></h1>
+                        <h1 id="register_new_component"><a class="header" href="#register_new_component"><code>register_new_component</code></a></h1>
 <div class="warning">
                             This function is impure, it might potentially try to access anything in the world.
                             If you are using it in the context of a script system, it might cause access errors.
-                        </div>> Sets the value under the specified path on the underlying value.
+                        </div>
+<blockquote>
+<p>Registers a new component type with the world.</p>
+<p>The component will behave like any other native component for all intents and purposes.
+The type that will be instantiated to back this component will be <code>DynamicComponent</code> which contains just one field:</p>
+<ul>
+<li><code>data</code></li>
+</ul>
+<p>This field can be set to any value and modified freely.</p>
+</blockquote>
 <h4 id="arguments"><a class="header" href="#arguments">Arguments</a></h4>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Documentation</th></tr></thead><tbody>
-<tr><td><strong>reference</strong></td><td><a href="core_bindings/types/reflectreference/../types/scriptvalue.html">ScriptValue</a></td><td>The reference to set the value on.</td></tr>
-<tr><td><strong>key</strong></td><td><a href="core_bindings/types/reflectreference/../types/scriptvalue.html">ScriptValue</a></td><td>The key to set the value at.</td></tr>
-<tr><td><strong>value</strong></td><td><a href="core_bindings/types/reflectreference/../types/scriptvalue.html">ScriptValue</a></td><td>The value to set.</td></tr>
+<tr><td><strong>name</strong></td><td><a href="../../types/string.html">String</a></td><td>The name of the component type</td></tr>
 </tbody></table>
 </div>
 <h4 id="returns"><a class="header" href="#returns">Returns</a></h4>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Documentation</th></tr></thead><tbody>
-<tr><td><strong>result</strong></td><td>()</td><td>Nothing if the value was set successfully.</td></tr>
+<tr><td><strong>registration</strong></td><td><a href="../../types/scriptcomponentregistration.html">ScriptComponentRegistration</a></td><td>The registration of the new component type if successful.</td></tr>
 </tbody></table>
 </div>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../../core_bindings/types/reflectreference/clear.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../../core_bindings/types/world.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../../core_bindings/types/reflectreference/functions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../../core_bindings/types/world/get_parent.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -196,11 +203,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../../core_bindings/types/reflectreference/clear.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../../core_bindings/types/world.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../../core_bindings/types/reflectreference/functions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../../core_bindings/types/world/get_parent.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
