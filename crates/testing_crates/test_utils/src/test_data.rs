@@ -311,6 +311,8 @@ fn init_world<F: FnOnce(&mut World, &mut TypeRegistry)>(world: &mut World, init:
                 StorageType::Table,
                 Layout::new::<usize>(),
                 None,
+                true,
+                ComponentCloneBehavior::Default,
             ))
         };
     }

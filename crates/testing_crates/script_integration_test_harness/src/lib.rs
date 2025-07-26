@@ -66,9 +66,9 @@ impl<L: IntoCallbackLabel, P: IntoScriptPluginParams> TestCallbackBuilder<P, L> 
 
                 system_state.apply(world);
             },
-        )
-        .with_name(L::into_callback_label().to_string())
-        .into_configs()
+        ).with_name(L::into_callback_label().to_string())));
+
+        system.into_configs()
     }
 }
 
@@ -360,7 +360,7 @@ pub fn run_lua_benchmark<M: criterion::measurement::Measurement>(
     label: &str,
     criterion: &mut criterion::BenchmarkGroup<M>,
 ) -> Result<(), String> {
-    use bevy::{log::Level, utils::tracing};
+    use bevy::log::Level;
     use bevy_mod_scripting_lua::mlua::Function;
 
     let plugin = make_test_lua_plugin();
@@ -392,7 +392,7 @@ pub fn run_rhai_benchmark<M: criterion::measurement::Measurement>(
     label: &str,
     criterion: &mut criterion::BenchmarkGroup<M>,
 ) -> Result<(), String> {
-    use bevy::{log::Level, utils::tracing};
+    use bevy::log::Level;
     use bevy_mod_scripting_rhai::rhai::Dynamic;
 
     let plugin = make_test_rhai_plugin();
@@ -614,7 +614,7 @@ pub fn perform_benchmark_with_generator<
                 )
             },
             |(i, w)| {
-                bevy::utils::tracing::event!(bevy::log::Level::TRACE, "profiling_iter {}", label);
+                event!(bevy::log::Level::TRACE, "profiling_iter {}", label);
                 bench_fn(w, i)
             },
             batch_size,

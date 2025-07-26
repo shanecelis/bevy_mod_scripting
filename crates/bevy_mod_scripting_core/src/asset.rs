@@ -592,9 +592,9 @@ mod tests {
     struct DummyPlugin;
 
     impl IntoScriptPluginParams for DummyPlugin {
-        type R = ();
-        type C = ();
         const LANGUAGE: Language = Language::Lua;
+        type C = ();
+        type R = ();
 
         fn build_runtime() -> Self::R {}
     }
