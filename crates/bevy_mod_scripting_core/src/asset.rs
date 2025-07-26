@@ -12,8 +12,8 @@ use bevy::{
     asset::{Asset, AssetEvent, AssetLoader, Assets, LoadState},
     log::{error, info, trace, warn, warn_once},
     prelude::{
-        Added, AssetServer, Commands, Entity, EventReader, EventWriter, Handle, IntoScheduleConfigs,
-        Local, Query, RemovedComponents, Res, ResMut,
+        Added, AssetServer, Commands, Entity, EventReader, EventWriter, Handle,
+        IntoScheduleConfigs, Local, Query, RemovedComponents, Res, ResMut,
     },
     reflect::TypePath,
 };

@@ -13,10 +13,10 @@ use bevy::{
     ecs::{
         component::Component,
         event::{Event, Events},
+        prelude::{Command, Resource},
         schedule::{IntoScheduleConfigs, ScheduleConfigs},
         system::{BoxedSystem, InfallibleSystemWrapper, IntoSystem, SystemState},
         world::{FromWorld, Mut},
-        prelude::{Command, Resource},
     },
     log::{tracing, tracing::event, Level},
     prelude::{BevyError, World},
@@ -56,7 +56,10 @@ struct TestCallbackBuilder<P: IntoScriptPluginParams, L: IntoCallbackLabel> {
 }
 
 impl<L: IntoCallbackLabel, P: IntoScriptPluginParams> TestCallbackBuilder<P, L> {
-    fn build(context_key: impl Into<ContextKey>, expect_response: bool) -> ScheduleConfigs<BoxedSystem<(), Result<(), BevyError>>> {
+    fn build(
+        context_key: impl Into<ContextKey>,
+        expect_response: bool,
+    ) -> ScheduleConfigs<BoxedSystem<(), Result<(), BevyError>>> {
         let context_key = context_key.into();
         let system = Box::new(InfallibleSystemWrapper::new(IntoSystem::into_system(
             move |world: &mut World,

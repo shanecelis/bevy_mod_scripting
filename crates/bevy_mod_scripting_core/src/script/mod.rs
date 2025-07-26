@@ -4,9 +4,9 @@ use crate::asset::ScriptAsset;
 use bevy::prelude::{Component, ReflectComponent};
 use bevy::{
     asset::{Asset, AssetId, Handle},
-    reflect::Reflect,
+    platform::collections::{HashMap, HashSet},
     prelude::Resource,
-    platform::collections::{HashSet, HashMap}
+    reflect::Reflect,
 };
 use std::{fmt, hash::BuildHasher, ops::Deref};
 

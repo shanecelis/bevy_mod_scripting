@@ -1,9 +1,6 @@
 use super::*;
 use crate::IntoScriptPluginParams;
-use bevy::{
-    prelude::Resource,
-    platform::hash::FixedHasher,
-};
+use bevy::{platform::hash::FixedHasher, prelude::Resource};
 use parking_lot::Mutex;
 use std::{hash::Hash, sync::Arc};
 

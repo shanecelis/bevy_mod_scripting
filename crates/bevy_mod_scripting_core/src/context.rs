@@ -6,7 +6,7 @@ use crate::{
     script::ContextKey,
     IntoScriptPluginParams,
 };
-use bevy::{prelude::Resource};
+use bevy::prelude::Resource;
 
 /// A trait that all script contexts must implement.
 ///

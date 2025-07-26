@@ -22,9 +22,9 @@ use bevy::{
         world::{Mut, World},
     },
     log::trace_once,
-    prelude::{Events, Ref, Resource},
     platform::collections::HashSet,
-    };
+    prelude::{Events, Ref, Resource},
+};
 
 /// A function that handles a callback event
 pub type HandlerFn<P> = fn(
@@ -451,7 +451,7 @@ mod test {
 
     use bevy::{
         app::{App, Update},
-        asset::{AssetApp, AssetId, AssetPlugin, Assets, Handle, uuid},
+        asset::{uuid, AssetApp, AssetId, AssetPlugin, Assets, Handle},
         diagnostic::DiagnosticsPlugin,
         ecs::world::FromWorld,
     };
