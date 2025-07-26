@@ -7,7 +7,7 @@ use asset::{
     configure_asset_systems, configure_asset_systems_for_plugin, Language, ScriptAsset,
     ScriptAssetLoader,
 };
-use bevy::{prelude::*, utils::HashMap};
+use bevy::{prelude::*, platform::collections::HashMap};
 use bindings::{
     function::script_function::AppScriptFunctionRegistry, garbage_collector,
     schedule::AppScheduleRegistry, script_value::ScriptValue, AppReflectAllocator,

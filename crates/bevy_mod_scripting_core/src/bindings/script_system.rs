@@ -21,19 +21,19 @@ use crate::{
     IntoScriptPluginParams,
 };
 use bevy::{
-    prelude::AssetServer,
+    prelude::{AssetServer, IntoScheduleConfigs},
     ecs::{
         archetype::{ArchetypeComponentId, ArchetypeGeneration},
         component::{ComponentId, Tick},
         entity::Entity,
         query::{Access, FilteredAccess, FilteredAccessSet, QueryState},
         reflect::AppTypeRegistry,
-        schedule::{IntoSystemConfigs, SystemSet},
-        system::{IntoSystem, System},
+        schedule::SystemSet,
+        system::{IntoSystem, System, SystemParamValidationError},
         world::{unsafe_world_cell::UnsafeWorldCell, World},
     },
     reflect::{OffsetAccess, ParsedPath, Reflect},
-    utils::hashbrown::HashSet,
+    platform::collections::HashSet,
 };
 use bevy_system_reflection::{ReflectSchedule, ReflectSystem};
 use std::{any::TypeId, borrow::Cow, hash::Hash, marker::PhantomData, ops::Deref, sync::Arc};

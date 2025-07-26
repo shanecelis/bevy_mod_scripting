@@ -1,6 +1,9 @@
 use super::*;
 use crate::IntoScriptPluginParams;
-use bevy::ecs::system::Resource;
+use bevy::{
+    prelude::Resource,
+    platform::hash::FixedHasher,
+};
 use parking_lot::Mutex;
 use std::{hash::Hash, sync::Arc};
 
@@ -11,7 +14,7 @@ pub struct Domain(u64);
 impl Domain {
     /// Create a domain handle.
     pub fn new(hashable: impl Hash) -> Self {
-        Domain(DefaultHashBuilder::default().hash_one(hashable))
+        Domain(FixedHasher::default().hash_one(hashable))
     }
 }
 
@@ -210,7 +213,7 @@ impl<P: IntoScriptPluginParams> ScriptContext<P> {
     pub fn hash(&self, context_key: &ContextKey) -> Option<u64> {
         self.policy
             .select(context_key)
-            .map(|key| DefaultHashBuilder::default().hash_one(&key))
+            .map(|key| FixedHasher::default().hash_one(&key))
     }
     /// Iterate through contexts.
     pub fn values(&self) -> impl Iterator<Item = &Arc<Mutex<P::C>>> {

@@ -15,9 +15,10 @@ use bevy::{
         event::{Event, EventCursor, EventIterator, Events},
         query::{Access, AccessConflicts},
         storage::SparseSetIndex,
-        system::{Local, Resource, SystemParam, SystemState},
+        system::{Local, SystemParam, SystemParamValidationError, SystemState},
         world::World,
     },
+    prelude::Resource,
 };
 use fixedbitset::FixedBitSet;
 

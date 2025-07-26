@@ -2,14 +2,13 @@
 
 use crate::asset::ScriptAsset;
 use bevy::prelude::{Component, ReflectComponent};
-use bevy::utils::hashbrown::hash_map::DefaultHashBuilder;
 use bevy::{
     asset::{Asset, AssetId, Handle},
-    ecs::system::Resource,
     reflect::Reflect,
-    utils::HashSet,
+    prelude::Resource,
+    platform::collections::{HashSet, HashMap}
 };
-use std::{collections::HashMap, fmt, hash::BuildHasher, ops::Deref};
+use std::{fmt, hash::BuildHasher, ops::Deref};
 
 mod context_key;
 mod script_context;
@@ -129,6 +128,7 @@ impl StaticScripts {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use bevy::asset::uuid;
 
     #[test]
     fn static_scripts_insert() {

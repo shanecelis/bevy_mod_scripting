@@ -12,8 +12,8 @@ use bevy::{
     asset::{Asset, AssetEvent, AssetLoader, Assets, LoadState},
     log::{error, info, trace, warn, warn_once},
     prelude::{
-        Added, AssetServer, Commands, Entity, EventReader, EventWriter, Handle, IntoSystemConfigs,
-        IntoSystemSetConfigs, Local, Query, RemovedComponents, Res, ResMut,
+        Added, AssetServer, Commands, Entity, EventReader, EventWriter, Handle, IntoScheduleConfigs,
+        Local, Query, RemovedComponents, Res, ResMut,
     },
     reflect::TypePath,
 };
@@ -185,13 +185,13 @@ fn sync_assets(
     for event in events.read() {
         match event {
             AssetEvent::Modified { id } => {
-                script_events.send(ScriptEvent::Modified { script: *id });
+                script_events.write(ScriptEvent::Modified { script: *id });
             }
             AssetEvent::Added { id } => {
-                script_events.send(ScriptEvent::Added { script: *id });
+                script_events.write(ScriptEvent::Added { script: *id });
             }
             AssetEvent::Removed { id } => {
-                script_events.send(ScriptEvent::Removed { script: *id });
+                script_events.write(ScriptEvent::Removed { script: *id });
             }
             _ => (),
         }
@@ -204,10 +204,10 @@ fn sync_components(
     mut script_events: EventWriter<ScriptEvent>,
 ) {
     for id in &script_comps {
-        script_events.send(ScriptEvent::Attached { entity: id });
+        script_events.write(ScriptEvent::Attached { entity: id });
     }
     for id in removed.read() {
-        script_events.send(ScriptEvent::Detached { entity: id });
+        script_events.write(ScriptEvent::Detached { entity: id });
     }
 }
 

@@ -13,14 +13,14 @@ use bevy::{
     ecs::{
         component::Component,
         event::{Event, Events},
-        schedule::{IntoSystemConfigs, SystemConfigs},
-        system::{IntoSystem, Resource, SystemState},
-        world::{Command, FromWorld, Mut},
+        schedule::{IntoScheduleConfigs, ScheduleConfigs},
+        system::{BoxedSystem, InfallibleSystemWrapper, IntoSystem, SystemState},
+        world::{FromWorld, Mut},
+        prelude::{Command, Resource},
     },
-    log::Level,
-    prelude::World,
+    log::{tracing, tracing::event, Level},
+    prelude::{BevyError, World},
     reflect::{Reflect, TypeRegistry},
-    utils::tracing,
 };
 use bevy_mod_scripting_core::{
     asset::ScriptAsset,
@@ -56,9 +56,9 @@ struct TestCallbackBuilder<P: IntoScriptPluginParams, L: IntoCallbackLabel> {
 }
 
 impl<L: IntoCallbackLabel, P: IntoScriptPluginParams> TestCallbackBuilder<P, L> {
-    fn build(context_key: impl Into<ContextKey>, expect_response: bool) -> SystemConfigs {
+    fn build(context_key: impl Into<ContextKey>, expect_response: bool) -> ScheduleConfigs<BoxedSystem<(), Result<(), BevyError>>> {
         let context_key = context_key.into();
-        IntoSystem::into_system(
+        let system = Box::new(InfallibleSystemWrapper::new(IntoSystem::into_system(
             move |world: &mut World,
                   system_state: &mut SystemState<WithWorldGuard<HandlerContext<P>>>| {
                 let with_guard = system_state.get_mut(world);

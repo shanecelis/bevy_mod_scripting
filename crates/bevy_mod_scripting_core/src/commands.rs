@@ -16,9 +16,8 @@ use crate::{
 };
 use bevy::{
     asset::Handle,
-    ecs::entity::Entity,
     log::{debug, error, warn},
-    prelude::{Command, EntityCommand},
+    prelude::{Command, EntityCommand, EntityWorldMut},
 };
 use std::marker::PhantomData;
 
@@ -101,7 +100,9 @@ impl<P: IntoScriptPluginParams> Command for DeleteScript<P> {
 }
 
 impl<P: IntoScriptPluginParams> EntityCommand for DeleteScript<P> {
-    fn apply(mut self, entity: Entity, world: &mut bevy::prelude::World) {
+    fn apply(mut self, entity_world: EntityWorldMut) {
+        let entity = entity_world.id();
+        let world = entity_world.into_world_mut();
         self.context_key.entity = Some(entity);
         Command::apply(self, world)
     }
@@ -364,7 +365,9 @@ impl<P: IntoScriptPluginParams> Command for CreateOrUpdateScript<P> {
 
 #[profiling::all_functions]
 impl<P: IntoScriptPluginParams> EntityCommand for CreateOrUpdateScript<P> {
-    fn apply(mut self, entity: Entity, world: &mut bevy::prelude::World) {
+    fn apply(mut self, entity_world: EntityWorldMut) {
+        let entity = entity_world.id();
+        let world = entity_world.into_world_mut();
         self.context_key.entity = Some(entity);
         Command::apply(self, world);
     }
@@ -470,8 +473,10 @@ impl<P: IntoScriptPluginParams> Command for RunScriptCallback<P> {
 }
 
 impl<P: IntoScriptPluginParams> EntityCommand for RunScriptCallback<P> {
-    fn apply(mut self, id: Entity, world: &mut bevy::prelude::World) {
-        self.context_key.entity = Some(id);
+    fn apply(mut self, entity_world: EntityWorldMut) {
+        let entity = entity_world.id();
+        let world = entity_world.into_world_mut();
+        self.context_key.entity = Some(entity);
         Command::apply(self, world);
     }
 }

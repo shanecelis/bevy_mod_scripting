@@ -262,7 +262,7 @@ pub fn lua_handler(
 
 #[cfg(test)]
 mod test {
-    use bevy::prelude::Handle;
+    use bevy::{prelude::Handle, asset::uuid};
     use bevy_mod_scripting_core::script::ScriptId;
     use mlua::Value;
 
